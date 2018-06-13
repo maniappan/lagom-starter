@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.example</groupId>
+    <artifactId>lagom-sample-receiver</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>sample-receiver-impl</artifactId>
+
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>sample-receiver-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>external-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+	
+    <dependency>
+      <groupId>com.lightbend.lagom</groupId>
+      <artifactId>lagom-javadsl-server_${scala.binary.version}</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.lightbend.lagom</groupId>
+      <artifactId>lagom-javadsl-persistence-cassandra_${scala.binary.version}</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.lightbend.lagom</groupId>
+      <artifactId>lagom-logback_${scala.binary.version}</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.typesafe.play</groupId>
+      <artifactId>play-akka-http-server_${scala.binary.version}</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.typesafe.play</groupId>
+      <artifactId>filters-helpers_${scala.binary.version}</artifactId>
+      <version>2.6.11</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.lightbend.lagom</groupId>
+      <artifactId>lagom-javadsl-testkit_${scala.binary.version}</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.lightbend.lagom</groupId>
+      <artifactId>lagom-javadsl-kafka-broker_${scala.binary.version}</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.lightbend.lagom</groupId>
+      <artifactId>lagom-javadsl-pubsub_${scala.binary.version}</artifactId>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.lightbend.lagom</groupId>
+        <artifactId>lagom-maven-plugin</artifactId>
+        <configuration>
+          <lagomService>true</lagomService>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
