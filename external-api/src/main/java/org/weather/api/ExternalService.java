@@ -6,6 +6,7 @@ import static com.lightbend.lagom.javadsl.api.Service.named;
 import com.lightbend.lagom.javadsl.api.Descriptor;
 import com.lightbend.lagom.javadsl.api.Service;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
+import com.lightbend.lagom.javadsl.api.deser.MessageSerializer;
 import com.lightbend.lagom.javadsl.api.transport.Method;
 
 import akka.NotUsed;
@@ -17,6 +18,6 @@ public interface ExternalService extends Service {
 	default Descriptor descriptor() {
 		return named("weatherapi").withCalls(Service.restCall(Method.GET,
 					"/api/:city/:state",
-				this::getWeather)).withAutoAcl(true);
+				this::getWeather).withResponseSerializer( new TextMessageSerializer())).withAutoAcl(true);
 	}
 }
