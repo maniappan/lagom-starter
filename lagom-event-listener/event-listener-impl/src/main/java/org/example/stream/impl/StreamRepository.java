@@ -31,7 +31,7 @@ public class StreamRepository {
     // with an exception, then reinitialise the session and attempt to create the tables
     if (initialisedSession == null || initialisedSession.isCompletedExceptionally()) {
       initialisedSession = uninitialisedSession.executeCreateTable(
-          "CREATE TABLE IF NOT EXISTS weatherdata (city text PRIMARY KEY, state text, weatherdata text,lastmodifieddate timestamp)"
+          "CREATE TABLE IF NOT EXISTS weatherjsondata (  id timeuuid PRIMARY KEY, data text)"
       ).thenApply(done -> uninitialisedSession).toCompletableFuture();
     }
   
@@ -39,20 +39,20 @@ public class StreamRepository {
     return initialisedSession;
   }
 
-  public CompletionStage<Done> updateMessage(String city, String state,String weatherdata) {
+  public CompletionStage<Done> updateMessage(String data) {
     return session().thenCompose(session ->
-        session.executeWrite("INSERT INTO weatherdata (city , state , weatherdata , lastmodifieddate ) VALUES (?, ?,?, ?,toTimestamp(now()))",
-        		city,  state, weatherdata)
+        session.executeWrite("INSERT INTO weatherjsondata (id , data ) VALUES ( now(),?)",
+        		data)
     );
   }
 
 	public CompletionStage<Map> getWeatherdata(String city) {
 		return session()
 				.thenCompose(session -> session.selectOne(
-						"SELECT weatherdata FROM weatherdata WHERE city = city ALLOW FILTERING", city))
+						"SELECT data FROM weatherjsondata WHERE city = city ALLOW FILTERING", city))
 				.thenApply(maybeRow -> maybeRow.map(row -> {
 					HashMap hash = new HashMap<String, String>();
-					hash.put("city", row.getString("weatherdata"));
+					hash.put("city", row.getString("data"));
 					//hash.put("WFID", row.getString("wfid"));
 					return hash;
 				}).orElse(new HashMap() {

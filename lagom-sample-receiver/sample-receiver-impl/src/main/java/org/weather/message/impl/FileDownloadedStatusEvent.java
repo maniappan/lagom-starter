@@ -17,7 +17,7 @@ import lombok.Value;
  * By convention, the events should be inner classes of the interface, which
  * makes it simple to get a complete picture of what events an entity has.
  */
-public interface TestSampleEvent extends Jsonable, AggregateEvent<TestSampleEvent> {
+public interface FileDownloadedStatusEvent extends Jsonable, AggregateEvent<FileDownloadedStatusEvent> {
 
   /**
    * Tags are used for getting and publishing streams of events. Each event
@@ -25,7 +25,7 @@ public interface TestSampleEvent extends Jsonable, AggregateEvent<TestSampleEven
    * 4 shards, which means we can have 4 concurrent processors/publishers of
    * events.
    */
-  AggregateEventShards<TestSampleEvent> TAG = AggregateEventTag.sharded(TestSampleEvent.class, 4);
+  AggregateEventShards<FileDownloadedStatusEvent> TAG = AggregateEventTag.sharded(FileDownloadedStatusEvent.class, 4);
 
   /**
    * An event that represents a change in greeting message.
@@ -33,22 +33,22 @@ public interface TestSampleEvent extends Jsonable, AggregateEvent<TestSampleEven
   @SuppressWarnings("serial")
   @Value
   @JsonDeserialize
-  public final class TestSampleMessageChanged implements TestSampleEvent {
+  public final class FileDownloadedStatusChanged implements FileDownloadedStatusEvent {
 
-	  public final String city;
-		public final String state;
+	  public final String filename;
+		public final String filestatus;
 
 		@JsonCreator
-		public TestSampleMessageChanged(@JsonProperty("city") String city, @JsonProperty("state") String state) {
-			this.city = city;
-			this.state = state;
+		public FileDownloadedStatusChanged(@JsonProperty("filename") String filename, @JsonProperty("filestatus") String filestatus) {
+			this.filename = filename;
+			this.filestatus = filestatus;
 
 		}
 
   }
 
   @Override
-  default AggregateEventTagger<TestSampleEvent> aggregateTag() {
+  default AggregateEventTagger<FileDownloadedStatusEvent> aggregateTag() {
     return TAG;
   }
 

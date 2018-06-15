@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright (C) 2016-2018 Lightbend Inc. <https://www.lightbend.com>
+  -->
+<!-- The default logback configuration that Lagom uses in dev mode if no other configuration is provided -->
 <configuration>
 
   <conversionRule conversionWord="coloredLevel" converterClass="com.lightbend.lagom.internal.logback.ColoredLevel" />
@@ -7,15 +11,22 @@
       <pattern>%date{"HH:mm:ss.SSS"} %coloredLevel %logger [%mdc] - %msg%n</pattern>
     </encoder>
   </appender>
-  
-  <logger name="org.workflow" level="DEBUG" />
+
+
+ <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>lagom.log</file>
+
+    <encoder>
+      <pattern>%date{"HH:mm:ss.SSS"} %coloredLevel %logger [%mdc] - %msg%n</pattern>
+    </encoder>
+  </appender>
 
   <!-- Set logging for all Play library classes to INFO -->
-  <logger name="play" level="ERROR" />
+  <logger name="play" level="INFO" />
   <!-- Set logging for all Akka library classes to INFO -->
-  <logger name="akka" level="ERROR" />
+  <logger name="akka" level="INFO" />
   <!-- Set logging for all Lagom library classes to INFO -->
-  <logger name="com.lightbend.lagom" level="ERROR" />
+  <logger name="com.lightbend.lagom" level="INFO" />
 
   <!-- Cassandra and the datasta driver are used by the Lagom event sourcing modules -->
   <logger name="org.apache.cassandra" level="ERROR" />
@@ -23,10 +34,12 @@
   <!-- Turning off connection error logging to avoid noise when services are forcibly stopped -->
   <logger name="com.datastax.driver.core.ControlConnection" level="OFF" />
   <!-- Turn down Kafka noise -->
-  <logger name="org.apache.kafka" level="ERROR" />
+  <logger name="org.apache.kafka" level="WARN" />
 
-  <root level="ERROR">
+  <root level="DEBUG">
     <appender-ref ref="STDOUT" />
+    <appender-ref ref="FILE" level="DEBUG" />
+
   </root>
 
 </configuration>

@@ -10,14 +10,15 @@ import com.lightbend.lagom.javadsl.api.deser.MessageSerializer;
 import com.lightbend.lagom.javadsl.api.transport.Method;
 
 import akka.NotUsed;
+import akka.util.ByteString;
 
 public interface ExternalService extends Service {
 
-	ServiceCall<NotUsed, String> getWeather(String city,String state);
+	ServiceCall<NotUsed, ByteString> getWeather(String filename);
 	@Override
 	default Descriptor descriptor() {
 		return named("weatherapi").withCalls(Service.restCall(Method.GET,
-					"/api/:city/:state",
+					"/sample/:filename",
 				this::getWeather).withResponseSerializer( new TextMessageSerializer())).withAutoAcl(true);
 	}
 }

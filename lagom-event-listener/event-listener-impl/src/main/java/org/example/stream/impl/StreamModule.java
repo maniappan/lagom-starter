@@ -2,7 +2,7 @@ package org.example.stream.impl;
 
 
 import org.weather.api.ExternalService;
-import org.weather.message.api.TestSampleService;
+import org.weather.message.api.FileDownloadService;
 
 import com.google.inject.AbstractModule;
 import com.lightbend.lagom.javadsl.api.ServiceInfo;
@@ -21,7 +21,7 @@ public class StreamModule extends AbstractModule implements ServiceGuiceSupport 
     // Bind the HelloService client
    // bindClient(PlannerService.class);
     bindClient(ExternalService.class);
-    bindClient(TestSampleService.class);
+    bindClient(FileDownloadService.class);
 
     // Bind the subscriber eagerly to ensure it starts up
     bind(StreamSubscriber.class).asEagerSingleton();

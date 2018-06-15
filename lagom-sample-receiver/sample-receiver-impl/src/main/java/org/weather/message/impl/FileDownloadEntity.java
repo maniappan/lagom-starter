@@ -3,15 +3,16 @@ package org.weather.message.impl;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import org.weather.message.impl.TestSampleCommand.TestSample;
-import org.weather.message.impl.TestSampleEvent.TestSampleMessageChanged;
+import org.weather.message.impl.DownloadFileCommand.DownloadFile;
+import org.weather.message.impl.DownloadFileCommand.GetFileStatus;
+import org.weather.message.impl.FileDownloadedStatusEvent.FileDownloadedStatusChanged;
 
 import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
 
 import akka.Done;
 
 /**
- * This is an event sourced entity. It has a state, {@link TestSampleState}, which
+ * This is an event sourced entity. It has a state, {@link FileStatusState}, which
  * stores what the greeting should be (eg, "Workflow").
  * <p>
  * Event sourced entities are interacted with by sending them commands. This
@@ -29,14 +30,14 @@ import akka.Done;
  * This entity defines one event, the {@link WorkflowMessageChanged} event,
  * which is emitted when a {@link UseWorkflowMessage} command is received.
  */
-public class TestSampleEntity extends PersistentEntity<TestSampleCommand, TestSampleEvent, TestSampleState> {
+public class FileDownloadEntity extends PersistentEntity<DownloadFileCommand, FileDownloadedStatusEvent, FileStatusState> {
 
   /**
    * An entity can define different behaviours for different states, but it will
    * always start with an initial behaviour. This entity only has one behaviour.
    */
   @Override
-  public Behavior initialBehavior(Optional<TestSampleState> snapshotState) {
+  public Behavior initialBehavior(Optional<FileStatusState> snapshotState) {
 
     /*
      * Behaviour is defined using a behaviour builder. The behaviour builder
@@ -47,35 +48,36 @@ public class TestSampleEntity extends PersistentEntity<TestSampleCommand, TestSa
      *
      * Otherwise, the default state is to use the Workflow greeting.
      */
-    BehaviorBuilder b = newBehaviorBuilder(snapshotState.orElse(new TestSampleState("TestSample", LocalDateTime.now().toString())));
+    BehaviorBuilder b = newBehaviorBuilder(snapshotState.orElse(new FileStatusState("NOT-EXIST", LocalDateTime.now().toString())));
 
     /*
      * Command handler for the UseWorkflowMessage command.
      */
-    b.setCommandHandler(TestSampleCommand.TestSampleMessage.class, (cmd, ctx) ->
+    b.setCommandHandler(DownloadFile.class, (cmd, ctx) ->
     // In response to this command, we want to first persist it as a
     // WorkflowMessageChanged event
-    ctx.thenPersist(new TestSampleEvent.TestSampleMessageChanged(entityId(), cmd.state),
+    ctx.thenPersist(new FileDownloadedStatusEvent.FileDownloadedStatusChanged(entityId(), cmd.filestatus),
         // Then once the event is successfully persisted, we respond with done.
         evt -> ctx.reply(Done.getInstance())));
 
     /*
      * Event handler for the WorkflowMessageChanged event.
      */
-    b.setEventHandler(TestSampleMessageChanged.class,
+    b.setEventHandler(FileDownloadedStatusChanged.class,
         // We simply update the current state to use the greeting message from
         // the event.
-        evt -> new TestSampleState(evt.city, LocalDateTime.now().toString()));
+        evt -> new FileStatusState(evt.filestatus, LocalDateTime.now().toString()));
 
     /*
-     * Command handler for the Workflow command.
+     * Command handler for the Hello command.
      */
-    b.setReadOnlyCommandHandler(TestSample.class,
+    b.setReadOnlyCommandHandler(GetFileStatus.class,
         // Get the greeting from the current state, and prepend it to the name
         // that we're sending
         // a greeting to, and reply with that message.
-        (cmd, ctx) -> ctx.reply(state().city + ", " + cmd.city + "!"));
+    	(cmd, ctx) -> ctx.reply(cmd.filename + " :: " + state().filestatus + "!"));
 
+    
     /*
      * We've defined all our behaviour, so build and return it.
      */

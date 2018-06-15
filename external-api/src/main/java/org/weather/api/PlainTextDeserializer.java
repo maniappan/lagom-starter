@@ -5,7 +5,7 @@ import com.lightbend.lagom.javadsl.api.deser.MessageSerializer;
 
 import akka.util.ByteString;
 
-public class PlainTextDeserializer implements MessageSerializer.NegotiatedDeserializer<String, ByteString> {
+public class PlainTextDeserializer implements MessageSerializer.NegotiatedDeserializer<ByteString, ByteString> {
 	  private final String charset;
 
 	  public PlainTextDeserializer(String charset) {
@@ -13,7 +13,7 @@ public class PlainTextDeserializer implements MessageSerializer.NegotiatedDeseri
 	  }
 
 	  @Override
-	  public String deserialize(ByteString bytes) throws DeserializationException {
-	    return bytes.decodeString(charset);
+	  public ByteString deserialize(ByteString bytes) throws DeserializationException {
+	    return bytes;
 	  }
 	}

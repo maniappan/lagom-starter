@@ -28,7 +28,7 @@
         <version>${lagom.version}</version>
         <configuration>
           <unmanagedServices>
-            <weatherapi>https://reqres.in</weatherapi>
+            <weatherapi>http://bulk.openweathermap.org</weatherapi>
           </unmanagedServices>
           <cassandraEnabled>true</cassandraEnabled>
           <kafkaEnabled>true</kafkaEnabled>

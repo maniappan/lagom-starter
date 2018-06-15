@@ -13,14 +13,14 @@ import com.lightbend.lagom.serialization.CompressedJsonable;
 @SuppressWarnings("serial")
 @Value
 @JsonDeserialize
-public final class TestSampleState implements CompressedJsonable {
+public final class FileStatusState implements CompressedJsonable {
 
-  public final String city;
+  public final String filestatus;
   public final String timestamp;
 
   @JsonCreator
-  public TestSampleState(String city, String timestamp) {
-    this.city = Preconditions.checkNotNull(city, "message");
+  public FileStatusState(String filestatus, String timestamp) {
+    this.filestatus = Preconditions.checkNotNull(filestatus, "filestatus");
     this.timestamp = Preconditions.checkNotNull(timestamp, "timestamp");
   }
 }

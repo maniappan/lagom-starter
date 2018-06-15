@@ -21,14 +21,14 @@ import akka.NotUsed;
  * This describes everything that Lagom needs to know about how to serve and
  * consume the Sample.
  */
-public interface TestSampleService extends Service {
+public interface FileDownloadService extends Service {
 
   /**
    * Example: curl http://localhost:9000/api/hello/Alice
    */
-  ServiceCall<NotUsed, Done> weatherapi(String city,String state);
+  ServiceCall<NotUsed, Done> process(String filename);
   
-  ServiceCall<NotUsed, String> sayHello(String id);
+  ServiceCall<NotUsed, String> getfilestatus(String filename);
 
 
   /**
@@ -39,19 +39,19 @@ public interface TestSampleService extends Service {
   /**
    * This gets published to Kafka.
    */
-  Topic<TestSampleEvent> testSampleEvents();
+  Topic<FileDownloadedStatusEvent> fileDownloadEvents();
 
   @Override
   default Descriptor descriptor() {
 
-    return named("getweather").withCalls(pathCall("/api/getweather/:city/:state", this::weatherapi), pathCall("/api/sayHello/:id", this::sayHello))
-        .withTopics(topic("weather-events", this::testSampleEvents)
+    return named("getweatherfile").withCalls(pathCall("/api/getweatherfile/:filename", this::process), pathCall("/api/getfilestatus/:filename", this::getfilestatus))
+        .withTopics(topic("file-events", this::fileDownloadEvents)
             // Kafka partitions messages, messages within the same partition will
             // be delivered in order, to ensure that all messages for the same user
             // go to the same partition (and hence are delivered in order with respect
             // to that user), we configure a partition key strategy that extracts the
             // name as the partition key.
-            .withProperty(KafkaProperties.partitionKeyStrategy(), TestSampleEvent::getcity))
-        .withAutoAcl(true).withServiceAcls(ServiceAcl.methodAndPath(Method.OPTIONS, "/api/getweather/.*"));
+            .withProperty(KafkaProperties.partitionKeyStrategy(), FileDownloadedStatusEvent::getFileStatus))
+        .withAutoAcl(true).withServiceAcls(ServiceAcl.methodAndPath(Method.OPTIONS, "/api/getweatherfile/.*"));
   }
 }
