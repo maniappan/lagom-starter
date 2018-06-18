@@ -16,6 +16,7 @@ import org.example.stream.weather.UnzipGZutil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.weather.api.ExternalService;
+import org.weather.message.api.FileConstants;
 import org.weather.message.api.FileDownloadService;
 import org.weather.message.impl.DownloadFileCommand.GetFileStatus;
 
@@ -49,7 +50,7 @@ public class FileDownloadServiceImpl implements FileDownloadService {
     this.externalService = externalService;
 
     persistentEntityRegistry.register(FileDownloadEntity.class);
-    LOGGER.info("TestSampleServiceImpl started");
+    LOGGER.info("FileDownloadService started");
   }
 
   @Override
@@ -107,25 +108,13 @@ public class FileDownloadServiceImpl implements FileDownloadService {
 				
 			}
 
-			/*
-			 * String fileName = "target/weather2.txt";
-			 * 
-			 * //read file into stream, try-with-resources try (Stream<String> stream =
-			 * Files.lines(Paths.get(fileName))) {
-			 * 
-			 * stream.forEach(System.out::println);
-			 * 
-			 * } catch (IOException e) { e.printStackTrace(); }
-			 */
-			
-		//	CompletionStage<Done> ret =null;
 			if(data==null)
 			{
-				return ref.ask(new DownloadFileCommand.DownloadFile("INVALID FILE"));
+				return ref.ask(new DownloadFileCommand.DownloadFile(FileConstants.INVALID_FILE));
 			}
 			else
 			{
-				return ref.ask(new DownloadFileCommand.DownloadFile("DOWNLOADED"));
+				return ref.ask(new DownloadFileCommand.DownloadFile(FileConstants.DOWNLOADED));
 			}
 
 			

@@ -15,11 +15,7 @@ public class StreamModule extends AbstractModule implements ServiceGuiceSupport 
 
   @Override
   protected void configure() {
-    bindServiceInfo(ServiceInfo.of("querylis"));
-    // Bind the StreamService service
-    // bindService(StreamService.class, StreamServiceImpl.class);
-    // Bind the HelloService client
-   // bindClient(PlannerService.class);
+	  bindServiceInfo(ServiceInfo.of("weatherapi"));
     bindClient(ExternalService.class);
     bindClient(FileDownloadService.class);
 

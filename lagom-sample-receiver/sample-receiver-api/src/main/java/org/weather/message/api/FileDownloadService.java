@@ -16,7 +16,7 @@ import akka.Done;
 import akka.NotUsed;
 
 /**
- * The TestSampleService interface.
+ * The FileDownloadService interface.
  * <p>
  * This describes everything that Lagom needs to know about how to serve and
  * consume the Sample.
@@ -24,7 +24,7 @@ import akka.NotUsed;
 public interface FileDownloadService extends Service {
 
   /**
-   * Example: curl http://localhost:9000/api/hello/Alice
+   * Example: curl http://localhost:9000/api/getweatherfile/filename.gz
    */
   ServiceCall<NotUsed, Done> process(String filename);
   
