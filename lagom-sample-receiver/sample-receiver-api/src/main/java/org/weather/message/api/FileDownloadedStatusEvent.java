@@ -3,6 +3,11 @@ package org.weather.message.api;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import com.google.common.base.Preconditions;
 import lombok.Value;
 
@@ -18,7 +23,7 @@ public interface FileDownloadedStatusEvent {
 	    public final String filestatus;
 
 	    @JsonCreator
-	    public FileDownloadedStatusChanged(String filename, String filestatus) {
+	    public FileDownloadedStatusChanged(@JsonProperty("filename") String filename, @JsonProperty("filestatus") String filestatus) {
 	        this.filename = Preconditions.checkNotNull(filename, "filename");
 	        this.filestatus = Preconditions.checkNotNull(filestatus, "filestatus");
 	    }
