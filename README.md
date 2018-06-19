@@ -21,4 +21,4 @@ Screen Shots ::
 ###### LAGOM Gateway
 
 
-![LAGOM Gateway](/screenshot/Gateway.png)
+![LAGOM Gateway](/screenshot/Gateway.PNG)
