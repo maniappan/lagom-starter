@@ -22,3 +22,20 @@ Screen Shots ::
 
 
 ![LAGOM Gateway](/screenshot/Gateway.PNG)
+
+###### LAGOM Stared
+
+![LAGOM Stared](/screenshot/lagomLog.PNG)
+
+
+###### Casandra 
+
+![Casandra](/screenshot/Casandra1.PNG)
+
+###### Casandra 
+
+![Casandra](/screenshot/Casandra2.PNG)
+
+###### Casandra 
+
+![Casandra](/screenshot/Casandra3.PNG)
