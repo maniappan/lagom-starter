@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -52,6 +51,11 @@
       <artifactId>lagom-javadsl-testkit_${scala.binary.version}</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- Service Locator Provider -->
+    <dependency>
+      <groupId>${serviceLocator.provider.groupName}</groupId>
+      <artifactId>${serviceLocator.provider.artifactName}</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
@@ -62,6 +66,22 @@
         <configuration>
           <lagomService>true</lagomService>
 
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <configuration>
+          <skip>false</skip>
+          <images>
+            <image>
+              <build>
+                <entryPoint>
+                  java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -cp '/maven/*' -Dhttp.address="127.0.0.1" -Dhttp.port="5002" play.core.server.ProdServerStart
+                </entryPoint>
+              </build>
+            </image>
+          </images>
         </configuration>
       </plugin>
     </plugins>

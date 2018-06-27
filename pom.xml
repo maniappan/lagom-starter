@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -13,8 +12,26 @@
     <module>lagom-sample-receiver</module>
     <module>lagom-event-listener</module>
     <module>external-api</module>
-
   </modules>
+
+  <repositories>
+    <repository>
+      <id>akka-dns</id>
+      <name>akka-dns</name>
+      <url>https://dl.bintray.com/hajile/maven</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>hseeberger</id>
+      <name>hseeberger</name>
+      <url>https://dl.bintray.com/hseeberger/maven</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <build>
     <plugins>
@@ -68,6 +85,29 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>0.20.1</version>
+        <configuration>
+          <skip>true</skip>
+          <images>
+            <image>
+              <name>%g/%a:%l</name>
+              <build>
+                <from>openjdk:8-jre-alpine</from>
+                <tags>
+                  <tag>latest</tag>
+                  <tag>${project.version}</tag>
+                </tags>
+                <assembly>
+                  <descriptorRef>artifact-with-dependencies</descriptorRef>
+                </assembly>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -85,6 +125,12 @@
         <artifactId>lombok</artifactId>
         <version>1.16.10</version>
       </dependency>
+      <!-- Service Locator Provider -->
+      <dependency>
+        <groupId>${serviceLocator.provider.groupName}</groupId>
+        <artifactId>${serviceLocator.provider.artifactName}</artifactId>
+        <version>${serviceLocator.provider.artifactVersion}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -92,5 +138,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <scala.binary.version>2.12</scala.binary.version>
     <lagom.version>1.4.0</lagom.version>
+    <serviceLocator.provider.groupName>com.lightbend</serviceLocator.provider.groupName>
+    <serviceLocator.provider.artifactName>lagom14-java-service-locator-dns_${scala.binary.version}</serviceLocator.provider.artifactName>
+    <serviceLocator.provider.artifactVersion>2.2.3</serviceLocator.provider.artifactVersion>
   </properties>
+
 </project>
