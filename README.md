@@ -9,7 +9,7 @@
 #### **What the code does ?**
 Sample code downloads  bulk weather data from [http://bulk.openweathermap.org/sample/]( http://bulk.openweathermap.org/sample/) and updates local casandra db which can be used to provide weather details offline.
 
-It uses and AKKA and KAFKA which provides high scalablity.
+It uses AKKA framework and Kafka Queues which provides high scalablity.
 
 
 #### Getting Started
